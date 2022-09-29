@@ -10,6 +10,9 @@
 						<a v-on:click="loadHome">Inicio</a>
 					</li>
 					<li v-if="is_auth">
+						<a v-on:click="loadAssistant">Asistente</a>
+					</li>
+					<li v-if="is_auth">
 						<a v-on:click="loadAccount">Cuenta</a>
 					</li>
 					<li v-if="is_auth">
@@ -56,6 +59,9 @@ export default {
     loadAccount() {
       this.$router.push({ name: "account" });
     },
+		loadAssistant() {
+			this.$router.push({ name: "assistant" });
+		},
 		loadLogIn() { // Just for testing purposes, remove the localStorage.setItem("isAuth", true) line and this.verifyAuth() line
 			this.$router.push({ name: "login" });
       localStorage.setItem("isAuth", true)
