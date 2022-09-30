@@ -13,6 +13,9 @@
 						<a v-on:click="loadAssistant">Asistente</a>
 					</li>
 					<li v-if="is_auth">
+						<a v-on:click="loadDoctor">Doctor</a>
+					</li>
+					<li v-if="is_auth">
 						<a v-on:click="loadAccount">Cuenta</a>
 					</li>
 					<li v-if="is_auth">
@@ -32,6 +35,7 @@
 				v-on:completedLogIn="completedLogIn"
 				v-on:completedSignUp="completedSignUp"
 				v-on:logOut="logOut"
+				v-on:verifyAuth="verifyAuth"
 			>
 			</router-view>
 		</div>
@@ -48,7 +52,7 @@ export default {
 	},
 	methods: {
 		verifyAuth() {
-			this.is_auth = localStorage.getItem("isAuth") || false;
+			this.is_auth = JSON.parse(localStorage.getItem("isAuth")) || false;
 
 			if (this.is_auth == false) this.$router.push({ name: "login" });
 			else this.$router.push({ name: "home" });
@@ -62,9 +66,11 @@ export default {
 		loadAssistant() {
 			this.$router.push({ name: "assistant" });
 		},
+		loadDoctor() {
+			this.$router.push({name: "doctor"})
+		},
 		loadLogIn() { // Just for testing purposes, remove the localStorage.setItem("isAuth", true) line and this.verifyAuth() line
 			this.$router.push({ name: "login" });
-      localStorage.setItem("isAuth", true)
       this.verifyAuth();
 		},
 		loadSignUp() {
@@ -74,15 +80,17 @@ export default {
 			localStorage.clear();
 			this.verifyAuth();
 		},
-		completedLogIn: function (data) {
+		completedLogIn: function (data, type, userType) {
 			localStorage.setItem("isAuth", true);
 			localStorage.setItem("user", data);
+			localStorage.setItem(type, userType)
+			localStorage.setItem('permissions', type)
 			alert("Autenticación Exitosa");
 			this.verifyAuth();
 		},
 		completedSignUp: function (data) {
 			alert("Registro Exitoso");
-			this.completedLogIn(data);
+			this.$router.push({name: 'login'})
 		},
 	},
 	created() {
