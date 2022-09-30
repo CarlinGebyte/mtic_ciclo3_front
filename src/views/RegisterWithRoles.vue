@@ -192,6 +192,11 @@ export default {
 		},
 	},
 	created() {
+		const assistant = JSON.parse(localStorage.getItem("assistant"));
+		if (!assistant) {
+			alert("No tiene permisos");
+			this.$router.push({ name: "home" });
+		}
 		this.getUsers();
 		this.getPatients();
 		this.getDoctors();
