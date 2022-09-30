@@ -162,6 +162,11 @@ export default {
 		},
 	},
 	created() {
+		const assistant = JSON.parse(localStorage.getItem("assistant"));
+		if (!assistant) {
+			this.$router.push({ name: "home" });
+			alert('No tiene permisos')
+		}
 		this.patientId = this.$route.params.id;
 		// axios.get(
 		//   `https://ciclo3-backend.onrender.com/api/patient/${this.patientId}/`,

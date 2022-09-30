@@ -30,7 +30,16 @@
 				</select>
 			</div>
 		</div>
-		<div v-if="action == 'get'" class="get cards">
+		<div v-if="action == 'get' && patientId" class="get cards">
+			<div
+				v-if="
+					medicalReports.filter((report) => report.patient == patientId)
+						.length === 0
+				"
+				class="no_reports"
+			>
+				<p>Actualmente no tiene ningún registro en su historia clínica</p>
+			</div>
 			<template v-for="(report, index) in medicalReports">
 				<div v-if="report.patient == patientId" class="card">
 					<div class="card_title">Historia {{ index + 1 }}</div>
@@ -47,7 +56,7 @@
 				</div>
 			</template>
 		</div>
-		<div v-if="action == 'post'" class="post">
+		<div v-if="action == 'post' && patientId" class="post">
 			<form v-on:submit.prevent="doctorPost">
 				<div>
 					<label for="suggestion">Ingrese la Sugerencia</label>
@@ -154,15 +163,11 @@ export default {
 		this.getUsers();
 		this.getPatients();
 		this.getMedical();
-		localStorage.setItem(
-			"doctor",
-			JSON.stringify({
-				id: 1,
-				user: 1234,
-			})
-		);
 		let doctor = JSON.parse(localStorage.getItem("doctor"));
-		console.log(doctor.id);
+		if (!doctor) {
+			alert("No tiene permisos");
+			this.$router.push("home");
+		}
 		if (doctor) this.doctor = doctor.id;
 	},
 };
@@ -192,10 +197,14 @@ export default {
 }
 .card {
 	width: 15%;
-	box-shadow: 9px -1px 38px -10px rgba(0,0,0,0.75);
+	box-shadow: 9px -1px 38px -10px rgba(0, 0, 0, 0.75);
 	padding: 1rem;
 	margin: 1rem;
 	border-radius: 30px;
+}
+.no_reports {
+	width: 100%;
+	text-align: center;
 }
 select,
 input {

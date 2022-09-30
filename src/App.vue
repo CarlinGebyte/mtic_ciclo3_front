@@ -16,6 +16,9 @@
 						<a v-on:click="loadDoctor">Doctor</a>
 					</li>
 					<li v-if="is_auth">
+						<a v-on:click="loadPatient">Paciente</a>
+					</li>
+					<li v-if="is_auth">
 						<a v-on:click="loadAccount">Cuenta</a>
 					</li>
 					<li v-if="is_auth">
@@ -68,6 +71,9 @@ export default {
 		},
 		loadDoctor() {
 			this.$router.push({name: "doctor"})
+		},
+		loadPatient() {
+			this.$router.push({name: "patient"})
 		},
 		loadLogIn() { // Just for testing purposes, remove the localStorage.setItem("isAuth", true) line and this.verifyAuth() line
 			this.$router.push({ name: "login" });
@@ -155,5 +161,13 @@ html {
 		width: 100%;
 		justify-content: center;
 	}
+}
+button {
+	border-radius: 20px;
+	padding: 0.5rem 1.5rem;
+	color: #fff;
+	border: 0;
+	background-color: #293462;
+	cursor: pointer;
 }
 </style>
